@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Add a New Rental</h2>
+<form action="{{ url_for('add_rental') }}" method="POST">
+    <div class="form-group">
+        <label for="customer_id">Customer</label>
+        <select class="form-control" id="customer_id" name="customer_id" required>
+            {% for customer in customers %}
+            <option value="{{ customer['customer_id'] }}">{{ customer['first_name'] }} {{ customer['last_name'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="bike_id">Bike</label>
+        <select class="form-control" id="bike_id" name="bike_id" required>
+            {% for bike in bikes %}
+            <option value="{{ bike['bike_id'] }}">{{ bike['model'] }} ({{ bike['type'] }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Add Rental</button>
+</form>
+{% endblock %}

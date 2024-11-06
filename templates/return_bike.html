@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Return Bike</h2>
+<form action="{{ url_for('return_bike', rental_id=rental_id) }}" method="POST">
+    <div class="form-group">
+        <label for="late_fee">Late Fee (if any)</label>
+        <input type="number" step="0.01" class="form-control" id="late_fee" name="late_fee">
+    </div>
+    <button type="submit" class="btn btn-success">Process Return</button>
+</form>
+{% endblock %}
