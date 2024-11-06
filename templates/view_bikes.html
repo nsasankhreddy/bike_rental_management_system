@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Bike List</h2>
+
+{% if bikes %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Bike ID</th>
+            <th>Model</th>
+            <th>Type</th>
+            <th>Available</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bike in bikes %}
+        <tr>
+            <td>{{ bike['bike_id'] }}</td>
+            <td>{{ bike['model'] }}</td>
+            <td>{{ bike['type'] }}</td>
+            <td>{{ 'Yes' if bike['availability_status'] else 'No' }}</td>
+            <td>
+                <a href="{{ url_for('edit_bike', bike_id=bike['bike_id']) }}" class="btn btn-warning btn-sm">Edit</a>
+                <form action="{{ url_for('delete_bike', bike_id=bike['bike_id']) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No bikes found.</p>
+{% endif %}
+{% endblock %}

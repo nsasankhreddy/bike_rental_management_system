@@ -77,5 +77,68 @@ def delete_customer(customer_id):
     flash("Customer deleted successfully!", "success")
     return redirect(url_for('view_customers'))
 
+# Route to add a new bike
+@app.route('/add_bike', methods=['GET', 'POST'])
+def add_bike():
+    if request.method == 'POST':
+        model = request.form['model']
+        bike_type = request.form['type']
+        availability_status = request.form.get('availability_status') == 'on'
+        
+        conn = connect_db()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO Bikes (model, type, availability_status) VALUES (?, ?, ?)", 
+                       (model, bike_type, availability_status))
+        conn.commit()
+        conn.close()
+        flash("Bike added successfully!", "success")
+        return redirect(url_for('view_bikes'))
+    
+    return render_template('add_bike.html')
+
+# Route to view all bikes
+@app.route('/view_bikes')
+def view_bikes():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Bikes")
+    bikes = cursor.fetchall()
+    conn.close()
+    return render_template('view_bikes.html', bikes=bikes)
+
+# Route to edit a bike
+@app.route('/edit_bike/<int:bike_id>', methods=['GET', 'POST'])
+def edit_bike(bike_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        model = request.form['model']
+        bike_type = request.form['type']
+        availability_status = request.form.get('availability_status') == 'on'
+        cursor.execute("UPDATE Bikes SET model = ?, type = ?, availability_status = ? WHERE bike_id = ?", 
+                       (model, bike_type, availability_status, bike_id))
+        conn.commit()
+        conn.close()
+        flash("Bike updated successfully!", "success")
+        return redirect(url_for('view_bikes'))
+    
+    cursor.execute("SELECT * FROM Bikes WHERE bike_id = ?", (bike_id,))
+    bike = cursor.fetchone()
+    conn.close()
+    return render_template('edit_bike.html', bike=bike)
+
+# Route to delete a bike
+@app.route('/delete_bike/<int:bike_id>', methods=['POST'])
+def delete_bike(bike_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM Bikes WHERE bike_id = ?", (bike_id,))
+    conn.commit()
+    conn.close()
+    flash("Bike deleted successfully!", "success")
+    return redirect(url_for('view_bikes'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)

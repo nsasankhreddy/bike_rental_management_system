@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Edit Bike</h2>
+<form action="{{ url_for('edit_bike', bike_id=bike['bike_id']) }}" method="POST">
+    <div class="form-group">
+        <label for="model">Model</label>
+        <input type="text" class="form-control" id="model" name="model" value="{{ bike['model'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="type">Type</label>
+        <select class="form-control" id="type" name="type" required>
+            <option value="road" {% if bike['type'] == 'road' %}selected{% endif %}>Road</option>
+            <option value="mountain" {% if bike['type'] == 'mountain' %}selected{% endif %}>Mountain</option>
+            <option value="hybrid" {% if bike['type'] == 'hybrid' %}selected{% endif %}>Hybrid</option>
+        </select>
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="availability_status" name="availability_status" {% if bike['availability_status'] %}checked{% endif %}>
+        <label class="form-check-label" for="availability_status">Available</label>
+    </div>
+    <button type="submit" class="btn btn-success">Update Bike</button>
+</form>
+<a href="{{ url_for('view_bikes') }}" class="btn btn-secondary mt-3">Back to Bikes</a>
+{% endblock %}

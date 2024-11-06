@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Add a New Bike</h2>
+<form action="{{ url_for('add_bike') }}" method="POST">
+    <div class="form-group">
+        <label for="model">Model</label>
+        <input type="text" class="form-control" id="model" name="model" required>
+    </div>
+    <div class="form-group">
+        <label for="type">Type</label>
+        <select class="form-control" id="type" name="type" required>
+            <option value="road">Road</option>
+            <option value="mountain">Mountain</option>
+            <option value="hybrid">Hybrid</option>
+        </select>
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="availability_status" name="availability_status">
+        <label class="form-check-label" for="availability_status">Available</label>
+    </div>
+    <button type="submit" class="btn btn-success">Add Bike</button>
+</form>
+{% endblock %}
