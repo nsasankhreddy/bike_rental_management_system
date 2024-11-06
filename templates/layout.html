@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Rental Management System</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Bike Rental Management System</h1>
+        <nav class="mb-3">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Home</a>
+            <a href="{{ url_for('add_customer') }}" class="btn btn-success">Add Customer</a>
+            <a href="{{ url_for('view_customers') }}" class="btn btn-info">View Customers</a>
+            <a href="{{ url_for('add_bike') }}" class="btn btn-success">Add Bike</a>
+            <a href="{{ url_for('view_bikes') }}" class="btn btn-info">View Bikes</a>
+        </nav>
+
+        <!-- Content Block: This will be filled by child templates -->
+        {% block content %}{% endblock %}
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

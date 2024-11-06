@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 
 app = Flask(__name__)
@@ -14,6 +14,68 @@ def connect_db():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+# Route to add a new customer
+@app.route('/add_customer', methods=['GET', 'POST'])
+def add_customer():
+    if request.method == 'POST':
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        
+        conn = connect_db()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO Customers (first_name, last_name, email) VALUES (?, ?, ?)", 
+                       (first_name, last_name, email))
+        conn.commit()
+        conn.close()
+        flash("Customer added successfully!", "success")
+        return redirect(url_for('view_customers'))
+    
+    return render_template('add_customer.html')
+
+# Route to view all customers
+@app.route('/view_customers')
+def view_customers():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Customers")
+    customers = cursor.fetchall()
+    conn.close()
+    return render_template('view_customers.html', customers=customers)
+
+# Route to edit a customer
+@app.route('/edit_customer/<int:customer_id>', methods=['GET', 'POST'])
+def edit_customer(customer_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        cursor.execute("UPDATE Customers SET first_name = ?, last_name = ?, email = ? WHERE customer_id = ?", 
+                       (first_name, last_name, email, customer_id))
+        conn.commit()
+        conn.close()
+        flash("Customer updated successfully!", "success")
+        return redirect(url_for('view_customers'))
+    
+    cursor.execute("SELECT * FROM Customers WHERE customer_id = ?", (customer_id,))
+    customer = cursor.fetchone()
+    conn.close()
+    return render_template('edit_customer.html', customer=customer)
+
+# Route to delete a customer
+@app.route('/delete_customer/<int:customer_id>', methods=['POST'])
+def delete_customer(customer_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM Customers WHERE customer_id = ?", (customer_id,))
+    conn.commit()
+    conn.close()
+    flash("Customer deleted successfully!", "success")
+    return redirect(url_for('view_customers'))
 
 if __name__ == '__main__':
     app.run(debug=True)
