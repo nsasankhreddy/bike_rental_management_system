@@ -223,8 +223,28 @@ def return_bike(rental_id):
 
         conn.close()
         return redirect(url_for('view_rentals'))
-    
     return render_template('return_bike.html', rental_id=rental_id)
+
+@app.route('/reset_database', methods=['POST'])
+def reset_database():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # Clear all data from the tables
+    cursor.execute("DELETE FROM Rentals")
+    cursor.execute("DELETE FROM Returns")
+    cursor.execute("DELETE FROM Bikes")
+    cursor.execute("DELETE FROM Customers")
+
+    # Optionally reset auto-increment values
+    cursor.execute("DELETE FROM sqlite_sequence WHERE name IN ('Rentals', 'Returns', 'Bikes', 'Customers')")
+
+    conn.commit()
+    conn.close()
+
+    # This message will show after the reset has been confirmed by the user on the frontend
+    flash("Database reset successfully!", "warning")
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)

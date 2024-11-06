@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Database Overview</h2>
+
+<h3>Customers</h3>
+{% if customers %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for customer in customers %}
+        <tr>
+            <td>{{ customer['customer_id'] }}</td>
+            <td>{{ customer['first_name'] }}</td>
+            <td>{{ customer['last_name'] }}</td>
+            <td>{{ customer['email'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No customers found.</p>
+{% endif %}
+
+<h3>Bikes</h3>
+{% if bikes %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Bike ID</th>
+            <th>Model</th>
+            <th>Type</th>
+            <th>Available</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bike in bikes %}
+        <tr>
+            <td>{{ bike['bike_id'] }}</td>
+            <td>{{ bike['model'] }}</td>
+            <td>{{ bike['type'] }}</td>
+            <td>{{ 'Yes' if bike['availability_status'] else 'No' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No bikes found.</p>
+{% endif %}
+
+<h3>Rentals</h3>
+{% if rentals %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Rental ID</th>
+            <th>Customer ID</th>
+            <th>Bike ID</th>
+            <th>Rental Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rental in rentals %}
+        <tr>
+            <td>{{ rental['rental_id'] }}</td>
+            <td>{{ rental['customer_id'] }}</td>
+            <td>{{ rental['bike_id'] }}</td>
+            <td>{{ rental['rental_date'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No rentals found.</p>
+{% endif %}
+
+<h3>Returns</h3>
+{% if returns %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Return ID</th>
+            <th>Rental ID</th>
+            <th>Return Date</th>
+            <th>Late Fee</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for return_record in returns %}
+        <tr>
+            <td>{{ return_record['return_id'] }}</td>
+            <td>{{ return_record['rental_id'] }}</td>
+            <td>{{ return_record['return_date'] }}</td>
+            <td>{{ return_record['late_fee'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No returns found.</p>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+{% endblock %}
