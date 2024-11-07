@@ -1,6 +1,46 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<div class="jumbotron text-center">
     <h1>Welcome to the Bike Rental Management System</h1>
-    <p>This is the homepage. More functionality will be added soon!</p>
+    <p class="lead">Manage your bike rentals, customers, and view detailed reports with ease.</p>
+</div>
+
+<div class="container mt-4">
+    <!-- Section for features -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAA9lBMVEX///9zsPQAAAD00LVlbXj3bILvx6TrVGNDSlTHx8czMzNIbZd1s/j71rr7boRspub09PQeLkDn5+e5ubm/oo0kN0wICAkjIyPMrZdvX1NEOjMdHR3evaQ/Q0rwaX5BZYtNU1tRRTyFb1umSVeMPUrhvJuzmIVycnL60KzzZHeUlJShoaFXV1cqLTVGRkaQeGNoaGiurq7X19eJiYk8PDxdjsXeYXXCVWYsRF7FRlMYJDJ9fX1aYWw0OUHAoIQjHRini3JbKDA6WXslEBRNIilwKC9iUkQ0LCYPFyA8GiB4NT9Qe6oaCw6sPknXTVtWHySRND0vDhHy3TXEAAAQOElEQVR4nO2deVviSBPAx/AOCIogaARBFJBDQDkFxxO8cGRG3e//Zd6u6hydpBM6iHR8nqk/dl0ibv+oo6uqK+HHj3/yT/6JHEn2elFPScleoaD00s3+VedsMIh5SKcre5kC0mvWWnuKgKgN2UudI8l07UwVIQHZi8perpcku6ZO1NPT0wOn3JxqAsh92Qv2kOhAJ7k5uv4fX67XNTkgNDXZK3aV5Jmmkhs3EJTvAJNMU5K9dS+S76GZVI2iHHmjfAuYXguj04GngX0TmCi6i7evfBcYynIggMLCKIGEwYj8MtdbbDDrRDOdpOy126UXA3cRZLHCxNKyF2+TJLKIuIsN5pS876wne/lWafmwMQvMOjhaLlC6acD2Is7CwtzgNnsVHL/pAcucTd8q6wwN5tdnganSICjf+GFhVbN+kEOcdDCU01T9OD+VI4ZmHSsBpREE5aTO/DkMh+YmBzSdAES1BvlcT/2yWC1t/QDLuYH0qIbppU8jozSscg5gw1FistsbzcUUA2I1NXCcPbm6wRpmEcWgciymBjQxqX4TJYlMbkEWHo3UtLNJFuA7lDHioJFoaKkOicufYLE6DkSBnDzVRPcWdn8OzQHsN/KagulPWpmNBkJaSxZLsvGJWKYLs+GgamTZGQTm3GIw1+s3N0f6j4bsSbSz3sBvvmywnDI1kKkaeFXWuUBPFW3I2AXTF32HurY4jax2TZQsyFdVpot+TnBtUw3AdCTCLBLMXpQAwiwYmbF8GbfNN39fmGtgUdt1BuaahbmSBNNdAOYa/OWuHebCQFyQVdT418z1UQ5Z6uH67dRIhQwYAJVVBThgro+85YB2lsb1MIHZd8RmzAAksTii2fqp6ik0hOWAJRyuPBvh7DoA/v+jl7NkADfcw3G7FHdCYZSSsUtdB8BlfqRaxOyN3OxACKWaD1GY+viOVP34Ti00Y5NGWvssecVkzRhyizveksmH4hpMuEKcRr1mYMDK9uQVZ2xshqq3GCdLFRCqGnCaA9ZlFKkzDtGcWWnCUvJiLIyd5UzFoMtIbM8wnSZM6gVZdBqwswPTZcgnE5PZcQY7o/HsCK3MH8xYwZ77EWNlMltNZncWYllbGEaLAaga3WXktjNAoAtw6tdlDNVUQTWM+0s+dELVHFGXUYVRWNUop0zJLPnIqZnDYh5cJusbpn4L5cANuj/5aSB7ki7ZgQ/3Gs6Nq+JWZtBATpM70DxGqvujpCAJOT315zIGDaQBSo56TEy2Yn7Q02aFWNk0TxcZt4u+etvLdUyewdCU04PATDjSmTmlpC15J2uVsUYTr9ou3KJuxtpnobSCcESbbFKYKl1yZmrPlOn2E884UmikqZS0/2rJP6FNRnPaYjJ0zTt39jWXtAsOmCoYWh2rNJS+ZN0km/oIc1Hz/3xp3yrPGe1C0XahSINAPVPUaWpyadIw0LRfmgKM5hqhjFX0IBfPOy+Y8TmL+qlJzc1g1uQ5AwFWh3GGs5DLBctmU823wT4lnp7jAc1zpW6FMVfO214sfAxMPIR1tDxDA8VMK/WwEyaer7bbGR5LflwaG9urBSZUkqoa6DW1tX3cCpPfv1PU6Y6TJfNMLhR34hyY+A5xvTNZLLjDVHgwcRqgpnk7Sz6LF55DcY5mQnBRGkxfUe64MHkt1tpVgx8+kbsqDyYOP8hyGleYuA7TtsNU6ZZ6Nw4eTMPNzEJumsnsU/vb4ZoZ/CBtp+lqCZbTZ9q45qzdZ0IhekFLSm0BIE88TZXF8iNKcplnrmZC7eJ0v+Rkiefb+3CBG83ABuWN08PsDBxQ8DbN/A5vm4Fsh1zg7TOoGJldwC50ANpcGJcEwHqBhclAdiZt2oRIEm8Ayo45MEJiwrThbyh7UmuaFN5qMlU/DTPFmC15SjN1ZtQzn4IBUaXPz2JT85MwtMALQN0MKVpLNSvNBTUT6wcBBYVoZ5pZFCb8LHPjdwqkAtxtRYQFYWQTMJLm5GGiMPUK2Sz3ZBMwEuVkyMIwMKshc7O0C9TPz4vCtEn4aMomYAQP0X3HZs1lSnJTMqd0Fb9HGgYM9gBlr98iMK7ttDNnrml5xTymDdZ9tHiI7mxfVEMWnHiIrQuoYirQxQjAyQwrYGe202Y8ECgZyiD/bufYCK7FMpJhqgHaMkHwpNammDHmXM/VTB5kJ2vrcZjuH6RYhgL5ZslqVBnjsMKUux0ry60qtSfrIthDz9toSvtWlGnWZmWYyjQDZmVE+qrZqTQcPtN+Nk7S7p7bOyFbzxxCWdBu1QbBOzYdXb94PlMdl7LZbLu6kw/Zq3/IZILnMSBp1ey7sjjkFeL/tg4HTTHBCiUfl7kJ5DT7YmUNVQw4jPSxDDeB+YaiCA1lgVidC6SRgSRpM2A+DaDQPoasaXkBwWmNu7m6CRsn5kGqYxxCpwKq843sthh4Fpo+Y/vfVTuYXY7vvgHLj9QV3SCrbjjEwsK3Wp4TwN3SIhoM5Jc8HHCW25I+1fEdYKa4WPW5nclbpwHq9XBmnKUngXCfw3eAKd7SbF/ZJ0kM3ftBwpXbdqlItXLXzn4TzRSJg2vppXpXLGazJSLZ7HNxqttX6Tbc/iYw+xWIV7bsn5FSJUxv0/ouMLCVGI5uKWnGFRwz+2YwxN0rxDX0O5rID9NStUJHMylMUHPMZDKVinYbjf7AgKFAZFcZo9wSDo1Eh2n1G810L5VMepaa5E/3mn3t8Zy5s6smvOPLQAhGszYwLYmB0YlYDhNGk1ynHyUL5JOkeo2Ww1YH/ajL73+SpNft2J4ze2eD4QkLgzbYakZ7jvWloo0zhS+DxrIfKpyMdjuMl6sv29tw47IADIbmy8sXNka0bOtLpWv6NKvyezJ5RZn8/qO/1ukuESeZ7hvGdXl/uDGbnZ+fX4jBYCOT/PpstnF4v6vfup2rmetLdms6yHG5PBoOh4VCgfxzNCofTzSgVnNZON1aTAchFIm1tU2QDUUbWJ4DA7kmvmFtLUGYDrcV6/qiV1Rpj8ejYWHLKoXhqDyhttBZygl1VPeUixkBoasisjlT6HTgHJeBruw2fcuaRnR4qXsP8Z0m9ZVJGUl+WgVeGY5e8Tdin78dIqVp5XIjASRrhmyekyVN63NpoGF2yL6P/JHEbJcaW6tZQ7U8jgo/HSQGT2FEtfPZI/c09ZXLWYIFwUUlLkTsDK0sYX/v5ia6HL03QFHKTp3YeEYPqJzPmBoOMwGKnQRXBE6TnacauDnjMsF592ZiV3OeyU8vEo3nJ7W1xVs8UbSwl/s1DgrY2fb8eIaxbIP3doJzD3/+T9lTK6Z2RhjYFrzBK9lFlItzLoq+mP35HnNptzLt/RBBlIeRCAriDB9RN4vQwJApiUMbfLVQ1UBUansYGm0xuyhmRj2fw0LDMofmaUFLoyW+q1qoHELT+daVBqcYlF2uYjbP0V2GnDWTYDwaDTmOtHWCNL6jAB5dvtzzDcRYEPrw1I2Gtv9eZlyWBGj1kccyLE8e1IfJ8dCpnK03oMn5jNA9CGPqoTeL/vFOx3wWPE9TD3l2SuP6b46NbY0mWhbHs8CTt3dy5cyX26BeVA93sdLAM0wcKHXayrzgG9kGWfEfHgv1chQO60nk12/F3x14OIahzOaz6G6s7t/aq5gKbTS5sGBUP+b4fuEY3nXWwA3u1WGFJ5HI3wdfX/+A8+UK19TddKPk9m/DellG/l0p0Z7ZBfcD2VyDoP7Ii2ND9PAkfdaVwlNNBNymJWxouL9siLHonzKopzjOQLfmdlzSb6075P+RzRmslOP8xGOMfTGKaQ4HJvKfj+8ZiXosg7u0xL3xgClW1EuXuE7e4GJkP7fKRuhNEeDjAsfOIr8U4Xs9cUr2XhgFFkeyxks7ysuua/xAP/vDQbHC7LnBREiMUIW2Ttz4+fucB87a+T3Lo+7ez1z/BFWM04KEYAzVdERUA3OLbvbhhbNJaq7DC5T7w9n5Gi/P1n71nFjlb+cyxWEi72KPr02SP/HCT6bm4hAgFLMa5QuUDmWulYnC/FWEbsO/ct0bRIG8QbQciLdf+oB5+09k3KO3mJH5Ak7Adsi3MlGYyIcikG9CS/H+S1k0K3MpYkRhfinzyzQ4Qt5e2MgE5cLdyoRh3h7nbzUtSC+/mGVNcZQxTKPMAWMKC4N25u00UPNvfzEK5nLHTOUFnaRjQyYWmEnZkFGB4mgwYGfe2WZHPL9cHGZmdRmCYj+pMmFYeSijzTEwnt0AGPF7+VoUAnNITNmE2Sq8OpI6DSZmfx1DoA7z35ydBjJ/HwnmgjC71qrrGPSi5kzZ08bSko0Y8ypq75hYmgYDFafXc9Kx48cJZXM2Qb8w22xBvDWCwrHWTTOiB6lklHmxC7OUD6MtjSUCzQCvBz6B+19wWBJL3UQ3L9k+xhYUlkJPoseK8dUC4/WMtCbX/Ul6v7vMaA0wRmSmHiN48kL2wEmBhfEYLMYHzDutbPNiufuoFWYIMGIs8I0xj0MdBjYaDxi0Ms7/fPcrYQo+YEAzw4iYZtL8TeZLYajPiNXzcK/460lEyGfQwXix7Atg7NGsn2TFXBIrXWi0lS0wA1cYeIgpb9FLh9m1wKBq9DMn+qOeDaeZFIBenxQiBsy7V6YJj5e95x0KLRvm3nKMQUOAVWjOlRrYX5+Y7o8ZgPt3c0GDaebySS4VxpGbHT/aFq2lMznrqw+vw62ICeOZm4H/83bHpcPQrJnN/4dlt6z58dW4UB793DIVg10A11ITnyyzCpg1rJrZegZKlYIutnpmaFyA3zJZvOsZaJdxi/+lw6xtO/v7AsWZmf3r/u+emsGzGLldmeXDHCoL9gAYxbwpXhUANGVXA0OdZoHuDMPi7TJYCnEP/ZYPk3ghoYl3BOANc8LCvHs+v3J1MJqd+TUzCwtYmcc3QMJb+aePS4dBO5v47DVbWOC8SfV4pMgqYfBwlt85c4WJ2BXjNRS0QhiaBDxyVeMGE7ErxjPVXikMqoYbnfknZ1Ybw1TGs22+Shh6pskNaHimSQ/FzDNNGwuEMtXz8Hy1MKiaV+54zG8t6EJJQrNrO8uH6lXKrBxGGyHiGhrY2eCqi4PBYGV2FJxq8AplK4fBqoY/bTLECUZs+kF17WDBeZM5d32tGiax7bLZmP3ax+GWAwXL5bkP4lkxDD2l5dNsjSYPfx4eRxwUmvrPvedj1TDa0M1T5IRDs1UYFrgolGVuN2flMHgcQGjeIpGTExsReYFHEnlDlvkjTauHoUFAefqF6zxhhAti+IvAV4zLgMHZJuX9r9vibfJLlEUGDAlpMOOpPHy8ibD8hXahKjRCLwOG0MxeBJXz6wmmmnNic8BSYGCACIfVHjTPcZO3p/9wKxX81nc5MHqaRnA8tPP2gSji3ycgC2Ztk244RP774PuK3vAUf1olwiQ2OUJhvlTu9Ras+vH3jY0GvzSdkCt+HvQAMBcbPCH57csh98rSZGbQwLLf35+enj4+nt5/Gy/Far7msu0jBAGSWMvvwyqdIwSBkNxZpy8YwhhJNmKBksHgrFXrN7qL3aKZjAZMem632v6Tf/JPliH/B+jHu1blKYUUAAAAAElFTkSuQmCC/350x150" class="card-img-top" alt="Add Customer">
+                <div class="card-body">
+                    <h5 class="card-title">Add a New Customer</h5>
+                    <p class="card-text">Quickly register new customers for bike rentals.</p>
+                    <a href="{{ url_for('add_customer') }}" class="btn btn-primary">Add Customer</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img src="/static/images/11.png/" class="card-img-top" alt="View Rentals">
+                <div class="card-body">
+                    <h5 class="card-title">View and Manage Rentals</h5>
+                    <p class="card-text">Track active rentals and process returns.</p>
+                    <a href="{{ url_for('view_rentals') }}" class="btn btn-info">View Rentals</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img src="/static/images/12.png" class="card-img-top" alt="Rental History">
+                <div class="card-body">
+                    <h5 class="card-title">Rental History</h5>
+                    <p class="card-text">View completed rentals and review revenue reports.</p>
+                    <a href="{{ url_for('rental_history') }}" class="btn btn-success">Rental History</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add more sections or promotional content as needed -->
+</div>
 {% endblock %}

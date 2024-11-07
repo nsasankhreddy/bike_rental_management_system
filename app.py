@@ -314,5 +314,23 @@ def total_revenue():
     conn.close()
     return render_template('total_revenue.html', total_revenue=total_revenue)
 
+@app.route('/rental_history')
+def rental_history():
+    conn = connect_db()
+    cursor = conn.cursor()
+    query = '''
+    SELECT Rentals.rental_id, Customers.first_name, Customers.last_name, Bikes.model, Rentals.rental_date, Returns.return_date, Returns.late_fee
+    FROM Rentals
+    JOIN Customers ON Rentals.customer_id = Customers.customer_id
+    JOIN Bikes ON Rentals.bike_id = Bikes.bike_id
+    JOIN Returns ON Rentals.rental_id = Returns.rental_id
+    ORDER BY Rentals.rental_date DESC;
+    '''
+    cursor.execute(query)
+    rental_history = cursor.fetchall()
+    conn.close()
+    return render_template('rental_history.html', rental_history=rental_history)
+
+
 if __name__ == '__main__':
     app.run(debug=True)

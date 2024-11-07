@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Rental History</h2>
+
+{% if rental_history %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Rental ID</th>
+            <th>Customer Name</th>
+            <th>Bike Model</th>
+            <th>Rental Date</th>
+            <th>Return Date</th>
+            <th>Late Fee</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rental in rental_history %}
+        <tr>
+            <td>{{ rental['rental_id'] }}</td>
+            <td>{{ rental['first_name'] }} {{ rental['last_name'] }}</td>
+            <td>{{ rental['model'] }}</td>
+            <td>{{ rental['rental_date'] }}</td>
+            <td>{{ rental['return_date'] }}</td>
+            <td>${{ rental['late_fee'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No rental history found.</p>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+{% endblock %}
