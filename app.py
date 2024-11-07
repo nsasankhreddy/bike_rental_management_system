@@ -147,28 +147,29 @@ def add_rental():
         customer_id = request.form['customer_id']
         bike_id = request.form['bike_id']
         rental_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        expected_return_date = request.form['expected_return_date']
 
         conn = connect_db()
         cursor = conn.cursor()
 
-        # Check if the bike is available
-        cursor.execute("SELECT availability_status FROM Bikes WHERE bike_id = ?", (bike_id,))
+        # Check if the bike is available for rent
+        cursor.execute("SELECT availability_status, price_per_hour FROM Bikes WHERE bike_id = ?", (bike_id,))
         bike = cursor.fetchone()
+        
         if bike and bike['availability_status']:
-            # Insert the rental record
-            cursor.execute("INSERT INTO Rentals (customer_id, bike_id, rental_date) VALUES (?, ?, ?)", 
-                           (customer_id, bike_id, rental_date))
-            # Update the bike's availability status to unavailable
+            # Insert the rental record with the expected return date
+            cursor.execute("INSERT INTO Rentals (customer_id, bike_id, rental_date, expected_return_date) VALUES (?, ?, ?, ?)", 
+                           (customer_id, bike_id, rental_date, expected_return_date))
             cursor.execute("UPDATE Bikes SET availability_status = 0 WHERE bike_id = ?", (bike_id,))
             conn.commit()
-            flash("Rental added successfully!", "success")
+            flash("Rental record created successfully!", "success")
         else:
-            flash("Bike is not available for rental.", "danger")
+            flash("The selected bike is not available for rent.", "danger")
 
         conn.close()
         return redirect(url_for('view_rentals'))
-    
-    # Fetch customers and available bikes for selection in the form
+
+    # Fetch available customers and bikes for selection in the form
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Customers")
@@ -200,31 +201,45 @@ def view_rentals():
 def return_bike(rental_id):
     if request.method == 'POST':
         return_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        late_fee = request.form.get('late_fee', 0)
-
+        
         conn = connect_db()
         cursor = conn.cursor()
 
-        # Update the return record
-        cursor.execute("INSERT INTO Returns (rental_id, return_date, late_fee) VALUES (?, ?, ?)", 
-                       (rental_id, return_date, late_fee))
-        
-        # Get the bike_id associated with the rental
-        cursor.execute("SELECT bike_id FROM Rentals WHERE rental_id = ?", (rental_id,))
-        bike = cursor.fetchone()
-        
-        if bike:
-            # Update the bike's availability status to available
-            cursor.execute("UPDATE Bikes SET availability_status = 1 WHERE bike_id = ?", (bike['bike_id'],))
+        # Get rental details, including bike type and rental start time
+        cursor.execute("""
+        SELECT Rentals.rental_date, Bikes.price_per_hour
+        FROM Rentals
+        JOIN Bikes ON Rentals.bike_id = Bikes.bike_id
+        WHERE Rentals.rental_id = ?
+        """, (rental_id,))
+        rental = cursor.fetchone()
+
+        if rental:
+            rental_start = datetime.strptime(rental['rental_date'], '%Y-%m-%d %H:%M:%S')
+            return_time = datetime.strptime(return_date, '%Y-%m-%d %H:%M:%S')
+            rental_duration = (return_time - rental_start).total_seconds() / 3600  # in hours
+
+            # Calculate total price based on the type of vehicle
+            price_per_hour = rental['price_per_hour']
+            total_price = round(rental_duration * price_per_hour, 2)
+
+            # Insert the return record with total price
+            cursor.execute("INSERT INTO Returns (rental_id, return_date, late_fee) VALUES (?, ?, ?)", 
+                           (rental_id, return_date, total_price))
+
+            # Update bike availability status
+            cursor.execute("UPDATE Bikes SET availability_status = 1 WHERE bike_id = (SELECT bike_id FROM Rentals WHERE rental_id = ?)", (rental_id,))
             conn.commit()
-            flash("Bike returned successfully!", "success")
+            flash(f"Bike returned successfully! Total charge: ${total_price}", "success")
         else:
             flash("Rental not found.", "danger")
 
         conn.close()
         return redirect(url_for('view_rentals'))
+
     return render_template('return_bike.html', rental_id=rental_id)
 
+# Route to reset the database
 @app.route('/reset_database', methods=['POST'])
 def reset_database():
     conn = connect_db()
@@ -245,6 +260,59 @@ def reset_database():
     # This message will show after the reset has been confirmed by the user on the frontend
     flash("Database reset successfully!", "warning")
     return redirect(url_for('index'))
+
+# Route to show the most rented bikes
+@app.route('/most_rented_bikes')
+def most_rented_bikes():
+    conn = connect_db()
+    cursor = conn.cursor()
+    query = '''
+    SELECT Bikes.model, COUNT(Rentals.bike_id) AS rental_count
+    FROM Rentals
+    JOIN Bikes ON Rentals.bike_id = Bikes.bike_id
+    GROUP BY Bikes.model
+    ORDER BY rental_count DESC
+    LIMIT 5;
+    '''
+    cursor.execute(query)
+    most_rented = cursor.fetchall()
+    conn.close()
+    return render_template('most_rented_bikes.html', most_rented=most_rented)
+
+# Route to show customers with overdue rentals
+@app.route('/overdue_customers')
+def overdue_customers():
+    conn = connect_db()
+    cursor = conn.cursor()
+    query = '''
+    SELECT Customers.first_name, Customers.last_name, Rentals.rental_date
+    FROM Rentals
+    JOIN Customers ON Rentals.customer_id = Customers.customer_id
+    LEFT JOIN Returns ON Rentals.rental_id = Returns.rental_id
+    WHERE Returns.return_date IS NULL AND Rentals.rental_date < DATE('now', '-7 days');
+    '''
+    cursor.execute(query)
+    overdue_customers = cursor.fetchall()
+    conn.close()
+    return render_template('overdue_customers.html', overdue_customers=overdue_customers)
+
+# Route to show total revenue from late fees
+@app.route('/total_revenue')
+def total_revenue():
+    conn = connect_db()
+    cursor = conn.cursor()
+    query = '''
+    SELECT SUM(late_fee) AS total_revenue
+    FROM Returns;
+    '''
+    cursor.execute(query)
+    total_revenue = cursor.fetchone()['total_revenue']
+    
+    # Handle None value if there are no returns
+    total_revenue = total_revenue if total_revenue is not None else 0.0
+    
+    conn.close()
+    return render_template('total_revenue.html', total_revenue=total_revenue)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Most Rented Bikes</h2>
+
+{% if most_rented %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Bike Model</th>
+            <th>Rental Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bike in most_rented %}
+        <tr>
+            <td>{{ bike['model'] }}</td>
+            <td>{{ bike['rental_count'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No rental data found.</p>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+{% endblock %}

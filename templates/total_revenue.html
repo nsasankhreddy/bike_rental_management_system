@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Total Revenue from Late Fees</h2>
+
+{% if total_revenue %}
+<p>Total Revenue: ${{ total_revenue }}</p>
+{% else %}
+<p>No revenue data found.</p>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+{% endblock %}
